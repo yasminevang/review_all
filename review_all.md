@@ -1,0 +1,134 @@
+review_all
+================
+October 7th 2025
+
+## What is Data Science?
+
+I’m reviewing from the first week of classes to the 6th week of classes.
+First, DEF: data science is the study of formulating and rigorously
+answering questions using a data-centric process that emphasizes
+clarity, reproducibility, effective communication, and ethical
+practices.
+
+From this lecture we learn how to load a package.
+
+``` r
+library(tidyverse)
+```
+
+    ## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+    ## ✔ dplyr     1.1.4     ✔ readr     2.1.5
+    ## ✔ forcats   1.0.0     ✔ stringr   1.5.1
+    ## ✔ ggplot2   3.5.2     ✔ tibble    3.3.0
+    ## ✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+    ## ✔ purrr     1.1.0     
+    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ✖ dplyr::filter() masks stats::filter()
+    ## ✖ dplyr::lag()    masks stats::lag()
+    ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+
+Okay now we load a tidy example data set
+
+``` r
+library(p8105.datasets)
+data("weather_df")
+```
+
+Using `help("weather_df")` we can have R tell us what is in the data.
+
+Now here is an advanced visualization of this data using `ggplot`
+
+``` r
+weather_df |> 
+  ggplot(aes(x = date, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  geom_smooth(se = FALSE) +
+  theme(legend.position = "bottom")
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+
+    ## Warning: Removed 17 rows containing non-finite outside the scale range
+    ## (`stat_smooth()`).
+
+    ## Warning: Removed 17 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](review_all_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+## Best Practices
+
+welcome to lecture 2, this should be okay.
+
+``` r
+library(tidyverse)
+```
+
+To save variables in R you must assign it to something
+
+``` r
+x = 2 + 3
+y = c(1, 3, 5, 7)
+```
+
+now you can recall the variables for different things. Also `c()` means
+a collection of numbers! So this code assigns variables.
+
+``` r
+x+y
+```
+
+    ## [1]  6  8 10 12
+
+So now we will overwrite x, using a random number generation for x
+amount of \#’s
+
+``` r
+x = runif(n = 20)
+view(x)
+```
+
+to find info abt a code you might not know u can ask R
+
+``` r
+?runif
+```
+
+    ## starting httpd help server ... done
+
+DATAAA FRAMEEEEESSSS ————————————-Let’s make one!
+
+``` r
+example_df = tibble(
+  vec_numeric = 1:4,
+  vec_char = c("my","name","is","yasmine"),
+  vec_factor = factor(c("male", "male","female","female"))
+)
+```
+
+so the `tibble` function helps us create the data frame table. using the
+vec… we can fill in/ create out table.
+
+if you don’t label the df, then you will have to code everything each
+time.
+
+Let’s plot
+
+``` r
+plot_df = tibble(
+  x = rnorm(100, sd = .5),
+  y = 1 +2 * x + rnorm(100)
+)
+
+ggplot(plot_df, aes(x = x)) + geom_histogram()
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](review_all_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
+``` r
+ggplot(plot_df, aes(x = x, y = y)) + geom_point()
+```
+
+![](review_all_files/figure-gfm/unnamed-chunk-10-2.png)<!-- -->

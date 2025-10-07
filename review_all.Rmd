@@ -1,7 +1,7 @@
 ---
 title: "review_all"
-output: html_document
-October 7th 2025
+output: github_document
+date: October 7th 2025
 ---
 
 ## What is Data Science?
@@ -38,9 +38,74 @@ weather_df |>
 ```
 
 
+
+
+
 ## Best Practices
 
 welcome to lecture 2, this should be okay.
+
+```{r}
+library(tidyverse)
+```
+
+To save variables in R you must assign it to something
+
+```{r}
+x = 2 + 3
+y = c(1, 3, 5, 7)
+```
+
+now you can recall the variables for different things. Also `c()` means a 
+collection of numbers! So this code assigns variables.
+
+```{r}
+x+y
+```
+
+So now we will overwrite x, using a random number generation for x amount of #'s
+
+```{r}
+x = runif(n = 20)
+view(x)
+```
+
+to find info abt a code you might not know u can ask R
+```{r}
+?runif
+```
+
+
+DATAAA
+FRAMEEEEESSSS
+-------------------------------------Let's make one!
+
+```{r}
+example_df = tibble(
+  vec_numeric = 1:4,
+  vec_char = c("my","name","is","yasmine"),
+  vec_factor = factor(c("male", "male","female","female"))
+)
+```
+
+so the `tibble` function helps us create the data frame table. using the vec...
+we can fill in/ create out table.
+
+if you don't label the df, then you will have to code everything each time.
+
+Let's plot
+
+```{r}
+plot_df = tibble(
+  x = rnorm(100, sd = .5),
+  y = 1 +2 * x + rnorm(100)
+)
+
+ggplot(plot_df, aes(x = x)) + geom_histogram()
+
+ggplot(plot_df, aes(x = x, y = y)) + geom_point()
+
+```
 
 
 
