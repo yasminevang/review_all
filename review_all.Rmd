@@ -1,0 +1,47 @@
+---
+title: "review_all"
+output: html_document
+October 7th 2025
+---
+
+## What is Data Science?
+
+I'm reviewing from the first week of classes to the 6th week of classes. First,
+DEF: data science is the study of formulating and rigorously answering
+questions using a data-centric process that emphasizes clarity, reproducibility,
+effective communication, and ethical practices.
+
+
+From this lecture we learn how to load a package.
+
+```{r}
+library(tidyverse)
+```
+
+Okay now we load a tidy example data set
+
+```{r}
+library(p8105.datasets)
+data("weather_df")
+```
+
+Using `help("weather_df")` we can have R tell us what is in the data.
+
+Now here is an advanced visualization of this data using `ggplot` 
+
+```{r}
+weather_df |> 
+  ggplot(aes(x = date, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  geom_smooth(se = FALSE) +
+  theme(legend.position = "bottom")
+```
+
+
+## Best Practices
+
+welcome to lecture 2, this should be okay.
+
+
+
+
