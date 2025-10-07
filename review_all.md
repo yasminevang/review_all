@@ -2,7 +2,7 @@ review_all
 ================
 October 7th 2025
 
-## What is Data Science?
+# What is Data Science?
 
 I’m reviewing from the first week of classes to the 6th week of classes.
 First, DEF: data science is the study of formulating and rigorously
@@ -56,7 +56,7 @@ weather_df |>
 
 ![](review_all_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
-## Best Practices
+# Best Practices
 
 welcome to lecture 2, this should be okay.
 
@@ -96,7 +96,7 @@ to find info abt a code you might not know u can ask R
 
     ## starting httpd help server ... done
 
-DATAAA FRAMEEEEESSSS ————————————-Let’s make one!
+### Make a data frame
 
 ``` r
 example_df = tibble(
@@ -132,3 +132,89 @@ ggplot(plot_df, aes(x = x, y = y)) + geom_point()
 ```
 
 ![](review_all_files/figure-gfm/unnamed-chunk-10-2.png)<!-- -->
+
+Oh btw to save the plot we would do:
+
+``` r
+ggsave("scatter_plot_review.pdf", height = 4, width = 4)
+```
+
+# Writing with Data!
+
+Restart R using session tab on top
+
+I kind already know how to use r markdown documents bc im doing that rn
+lol.
+
+First know that using **, around your words make bold and \_ before and
+after\_ makes: *this* vs the first one which is **this\*\*
+
+### Making a data frame from plot
+
+the code chunk below creates a data frame and generates a plot.
+
+``` r
+library(tidyverse)
+
+plot2_df = tibble(
+  x = rnorm(500, mean = 2, sd = 4),
+  y = 3 - 4.2 * x + rnorm(500)
+)
+
+ggplot(plot2_df, aes(x = x, y = y)) + geom_point()
+```
+
+![](review_all_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+Know that in editing the `{r}` section, you can make things disappear
+from the final doc that is in our viewer.
+
+using `echo = FALSE` you can hide the code you used to make the plot
+using `message = FALSE` you turn off the messages so the study after you
+load a package.
+
+I will also code the data frame has 100rows. so using inline code `` and
+putting in nrow(your_df_here), the R will code automatically for you the
+number of rows.
+
+#### Here is a list
+
+using \* we can make lists:
+
+- This is my first list item
+- we need at least two items
+  - using tab here is a sub item
+- third list thang
+
+#### Lets make a Table
+
+| Col 1 | Col 2 |
+|-------|-------|
+| a     | b     |
+
+> Now to make a block quote use this `>` and then type
+
+Let’s see if I can do a quick learning assessment:
+
+``` r
+library (tidyverse)
+
+learning_df = tibble(
+  norm_samp = rnorm(500, mean = 1),
+  norm_samp_pos = norm_samp > 0,
+  abs_norm_samp = abs(norm_samp)
+)
+
+ggplot(learning_df, aes(x = abs_norm_samp)) + 
+  geom_histogram()
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](review_all_files/figure-gfm/learning%20assessment%201-1.png)<!-- -->
+
+``` r
+median_samp = median(pull(learning_df, norm_samp))
+```
+
+Here you can find the median rounded 0.97.
