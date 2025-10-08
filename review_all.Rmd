@@ -193,7 +193,12 @@ Lets write a list of our previous sample
 
 # Git and Github
 
-Yay let's start class 4.
+Yay let's start class 4. Luckily, I actually remember how to do most of this
+as we are currently using git for this document. lol!
+
+no need to review this information, we can now move onto the **HARD** stuff.
+
+say a _prayer_. 
 
 
 
