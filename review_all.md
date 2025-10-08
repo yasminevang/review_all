@@ -197,24 +197,28 @@ using \* we can make lists:
 Let’s see if I can do a quick learning assessment:
 
 ``` r
-library (tidyverse)
-
-learning_df = tibble(
+la_df = tibble(
   norm_samp = rnorm(500, mean = 1),
   norm_samp_pos = norm_samp > 0,
   abs_norm_samp = abs(norm_samp)
 )
 
-ggplot(learning_df, aes(x = abs_norm_samp)) + 
-  geom_histogram()
+ggplot(la_df, aes(x = abs_norm_samp)) + geom_histogram()
 ```
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-![](review_all_files/figure-gfm/learning%20assessment%201-1.png)<!-- -->
+![](review_all_files/figure-gfm/la-1.png)<!-- -->
 
 ``` r
-median_samp = median(pull(learning_df, norm_samp))
+median_samp = median(pull(la_df, norm_samp))
 ```
 
-Here you can find the median rounded 0.97.
+Here you can find the median rounded 0.98.
+
+Lets write a list of our previous sample *0.9776383 *0.9787247 \*
+1.0230305
+
+# Git and Github
+
+Yay let’s start class 4.

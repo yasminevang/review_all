@@ -168,28 +168,32 @@ a     | b
 
 Let's see if I can do a quick learning assessment:
 
-```{r learning assessment 1}
-library (tidyverse)
-
-learning_df = tibble(
+```{r la}
+la_df = tibble(
   norm_samp = rnorm(500, mean = 1),
   norm_samp_pos = norm_samp > 0,
   abs_norm_samp = abs(norm_samp)
 )
 
-ggplot(learning_df, aes(x = abs_norm_samp)) + 
-  geom_histogram()
-```
+ggplot(la_df, aes(x = abs_norm_samp)) + geom_histogram()
+
+median_samp = median(pull(la_df, norm_samp))
 
 
-```{r}
-median_samp = median(pull(learning_df, norm_samp))
-  
 ```
+
 
 Here you can find the median rounded `r round (median_samp, digits = 2)`.
 
+Lets write a list of our previous sample
+*`r mean(pull(la_df, norm_samp))`
+*`r median(pull(la_df, norm_samp))`
+* `r sd(pull(la_df, norm_samp))`
 
+
+# Git and Github
+
+Yay let's start class 4.
 
 
 
