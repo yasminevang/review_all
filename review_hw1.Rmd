@@ -45,6 +45,51 @@ don't forget to add `geom_point` at the end to have points on the plot.
 to make a `ggsave`, create a title for your image and then add .pdf 
 
 
+### Next Problem
+
+Let's make a data frame:
+
+```{r problem 2}
+new_df = tibble(
+  yuh = rnorm(10),
+  vec_log = yuh > 0,
+  vec_char = c("a","b","c","d","e","f","g","h","i","j"),
+  vec_f = factor(c("small", "small", "small", "medium","medium", "medium","medium", "large","large","large"))
+)
+
+```
+
+key things: a vector is a sequence of things. think of a excel sheet row. 
+character means its a thing, numeric vector is numbers. when you use `factor` 
+then `c()` right after to list our the things you are factoring into levels.
+
+now lets try and take the mean of each variable
+
+```{r}
+mean(pull(new_df, yuh))
+
+mean(pull(new_df, vec_log))
+
+mean(pull(new_df, vec_char))
+```
+
+
+the last mean will **not** work because you can't pull the mean from characters
+
+so we change them to numeric
+
+```{r}
+as.numeric(pull(new_df, vec_f))
+
+```
+
+okay it made some numbers now let see if we can get the mean
+
+```{r}
+mean(as.numeric(pull(new_df, vec_f)))
+```
+
+perfect! mean is 2. 
 
 
 
