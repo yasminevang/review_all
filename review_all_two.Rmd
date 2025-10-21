@@ -6,3 +6,48 @@ output: github_document
 # Data wrangling 1
 
 Let's go!
+
+```{r setup}
+library(tidyverse)
+```
+
+lets read in some data and clean names
+
+```{r}
+litters_df = read_csv("data/FAS_litters.csv")
+litters_df =
+  janitor::clean_names(litters_df)
+```
+
+lets look at info
+
+Printing in the console
+```{r}
+tail(litters_df)
+
+# looking at the last row of data
+
+skimr::skim(litters_df)
+
+#when you have characters variables is give u a histogram, sd, mean, max, min, info missing
+
+
+```
+
+so we have <chr> variables that have letters and numbers, then we have <dbl> 
+which are numeric variables.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
