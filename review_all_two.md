@@ -162,3 +162,13 @@ Now lets read in a SAS file
 pulse_df = read_sas("data/public_pulse_data.sas7bdat")
 pulse_df = janitor::clean_names(pulse_df)
 ```
+
+#### comparison with base R
+
+what about read.csv? It is built into R, but don’t use it.
+
+\####Okay now to export data export mlb sub-table
+
+``` r
+write_csv(mlb_df,"data/mlb_subtable.csv")
+```
