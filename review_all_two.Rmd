@@ -80,13 +80,112 @@ what about read.csv? It is built into R, but don't use it.
 export mlb sub-table
 
 ```{r}
-write_csv(mlb_df,"data/mlb_subtable.csv")
+#write_csv(mlb_df,"data/mlb_subtable.csv")
+```
+i put a hash tag so it wont reprint
+
+# Data Manipulation
+
+Remember to clear environment bc we are starting with the same info but new stuff.
+
+Load in the litters data
+
+```{r}
+litters_df = read_csv("data/FAS_litters.csv")
+litters_df = janitor::clean_names(litters_df)
+litters_df
+```
+
+#### lets look at `select`
+
+Choose some columns and not others
+
+```{r}
+select(litters_df, group, gd0_weight)
+```
+
+selects only those two columns
+
+```{r}
+select(litters_df, group, gd0_weight:gd_of_birth)
+```
+
+```{r}
+select(litters_df, -litter_number)
+```
+
+deletes columns
+
+```{r}
+select(litters_df, GROUP = group, LITTer_NUmBer = litter_number)
+```
+
+^ renames groups
+
+```{r}
+rename(litters_df, GROUP = group, LITTer_NUmBer = litter_number)
+```
+
+a few helper commands we can find with ?select_helpers
+Select helpers
+
+```{r}
+select(litters_df, starts_with("gd"))
+```
+
+how to pick a column quickly that has the same begining start.
+
+```{r}
+select(litters_df, litter_number, everything())
+```
+
+```{r}
+relocate(litters_df, litter_number)
+```
+
+the last two things, puts column `litter_number` in the front.
+
+#### filter
+
+Filter operates on rows
+
+```{r}
+filter(litters_df, gd0_weight < 22)
 ```
 
 
+```{r}
+filter(litters_df, gd0_weight >= 22)
+```
 
+this shows the rows that are less than or greater than 22!
 
+```{r}
+filter(litters_df, gd_of_birth == 20)
+```
 
+double equal sign so that it doesnt SAVE it as a variable
+
+```{r}
+filter(litters_df, !gd_of_birth == 20)
+```
+
+lets look complex things
+
+```{r}
+filter(litters_df, gd0_weight >= 22, gd_of_birth == 20)
+```
+
+specifying things we want to keep in our dataset
+
+```{r}
+filter(litters_df, group == "Mod8")
+```
+
+```{r}
+filter(litters_df, group %in% c ("Mod8", "Con7"))
+```
+it shows rows in either using mod8 or con7.
 
 
 
