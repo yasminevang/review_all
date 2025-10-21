@@ -11,6 +11,7 @@ Let's go!
 library(tidyverse)
 library(readxl)
 library(haven)
+library(dplyr)
 ```
 
 lets read in some data and clean names
@@ -96,6 +97,35 @@ litters_df = janitor::clean_names(litters_df)
 litters_df
 ```
 
+this is other data from chatgpt to clean data into all dbl
+
+```{r}
+library(readr)
+library(janitor)
+
+litters_df =
+  read_csv(
+    "data/FAS_litters.csv",
+    na = c("", "NA", "."),
+    col_types = cols(
+      Group = col_character(),
+      `Litter Number` = col_character(),
+      `GD0 weight` = col_double(),
+      `GD18 weight` = col_double(),
+      `GD of Birth` = col_double(),
+      `Pups born alive` = col_double(),
+      `Pups dead @ birth` = col_double(),
+      `Pups survive` = col_double()
+    ),
+    show_col_types = FALSE
+  ) |>
+  clean_names()
+```
+
+
+
+
+
 #### lets look at `select`
 
 Choose some columns and not others
@@ -176,17 +206,28 @@ lets look complex things
 filter(litters_df, gd0_weight >= 22, gd_of_birth == 20)
 ```
 
-specifying things we want to keep in our dataset
+specifying things we want to keep in our data set
 
 ```{r}
 filter(litters_df, group == "Mod8")
 ```
 
 ```{r}
-filter(litters_df, group %in% c ("Mod8", "Con7"))
+filter(litters_df, group %in% c("Mod8", "Con7"))
 ```
 it shows rows in either using mod8 or con7.
 
+#### `mutate`
+
+```{r}
+mutate(
+  litters_df,
+  wt_gain = gd18_weight - gd0_weight,
+  group = str_to_lower(group))
+```
+
+this didn't work like it should, but basically you are creating a new column
+called wt_gain using the other information. Then you change the groups to lowercase.
 
 
 
