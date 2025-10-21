@@ -214,10 +214,10 @@ ggplot(la_df, aes(x = abs_norm_samp)) + geom_histogram()
 median_samp = median(pull(la_df, norm_samp))
 ```
 
-Here you can find the median rounded 1.05.
+Here you can find the median rounded 0.96.
 
-Lets write a list of our previous sample *1.0370738 *1.0545117 \*
-1.0240904
+Lets write a list of our previous sample *0.9672944 *0.9626831 \*
+1.0013121
 
 # Git and Github
 
