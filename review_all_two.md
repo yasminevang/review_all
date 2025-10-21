@@ -20,6 +20,11 @@ library(tidyverse)
     ## ✖ dplyr::lag()    masks stats::lag()
     ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
 
+``` r
+library(readxl)
+library(haven)
+```
+
 lets read in some data and clean names
 
 ``` r
@@ -103,3 +108,57 @@ Data summary
 
 so we have <chr> variables that have letters and numbers, then we have
 <dbl> which are numeric variables.
+
+#### options to read_csv
+
+``` r
+litters_df = read_csv("data/FAS_litters.csv", skip = 10, col_names = FALSE,
+                      na = c("", "NA", ".", "999"))
+```
+
+    ## Rows: 40 Columns: 8
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (2): X1, X2
+    ## dbl (6): X3, X4, X5, X6, X7, X8
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+# here we are skipping the first 10 lines of data, and then we don't want the
+# data to be whatever so we make R make random column names for the table. and
+# na tells the data that those things are missing numbers like 
+```
+
+when you put ?read_csv… you can learn about this function. more info.
+
+Now lets read in different files \#### read in an excel file
+
+``` r
+mlb_df = read_excel("data/mlb11.xlsx", range = "A1:F7")
+mlb_df
+```
+
+    ## # A tibble: 6 × 6
+    ##   team                 runs at_bats  hits homeruns bat_avg
+    ##   <chr>               <dbl>   <dbl> <dbl>    <dbl>   <dbl>
+    ## 1 Texas Rangers         855    5659  1599      210   0.283
+    ## 2 Boston Red Sox        875    5710  1600      203   0.28 
+    ## 3 Detroit Tigers        787    5563  1540      169   0.277
+    ## 4 Kansas City Royals    730    5672  1560      129   0.275
+    ## 5 St. Louis Cardinals   762    5532  1513      162   0.273
+    ## 6 New York Mets         718    5600  1477      108   0.264
+
+``` r
+# this data set was already cleaned
+```
+
+remember you can use ?read_excel to get more info.
+
+Now lets read in a SAS file
+
+``` r
+pulse_df = read_sas("data/public_pulse_data.sas7bdat")
+pulse_df = janitor::clean_names(pulse_df)
+```

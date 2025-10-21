@@ -9,6 +9,8 @@ Let's go!
 
 ```{r setup}
 library(tidyverse)
+library(readxl)
+library(haven)
 ```
 
 lets read in some data and clean names
@@ -31,13 +33,44 @@ skimr::skim(litters_df)
 
 #when you have characters variables is give u a histogram, sd, mean, max, min, info missing
 
-
 ```
 
 so we have <chr> variables that have letters and numbers, then we have <dbl> 
 which are numeric variables.
 
 
+#### options to read_csv
+
+```{r}
+litters_df = read_csv("data/FAS_litters.csv", skip = 10, col_names = FALSE,
+                      na = c("", "NA", ".", "999"))
+
+# here we are skipping the first 10 lines of data, and then we don't want the
+# data to be whatever so we make R make random column names for the table. and
+# na tells the data that those things are missing numbers like 
+
+```
+
+when you put ?read_csv... you can learn about this function. more info.
+
+Now lets read in different files
+#### read in an excel file
+
+```{r}
+mlb_df = read_excel("data/mlb11.xlsx", range = "A1:F7")
+mlb_df
+# this data set was already cleaned
+```
+
+remember you can use ?read_excel to get more info. 
+
+Now lets read in a SAS file
+
+```{r}
+pulse_df = read_sas("data/public_pulse_data.sas7bdat")
+pulse_df = janitor::clean_names(pulse_df)
+
+```
 
 
 
