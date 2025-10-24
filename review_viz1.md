@@ -303,3 +303,34 @@ weather_df |>
 ![](review_viz1_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
 vs the regular geom_density.
+
+# save and embed
+
+Let’s save a scaterplot
+
+``` r
+weather_plot2 = 
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5)
+
+ggsave("review_all_files/weather_plot2.pdf", weather_plot2, width = 8, height = 5)
+```
+
+    ## Warning: Removed 17 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+how to saveee thinfs.
+
+u can also just do \`ggsave(“weather_plot2.pdf”, weather_plot2)
+
+embed at different sze
+
+``` r
+weather_plot2
+```
+
+    ## Warning: Removed 17 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](review_viz1_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->

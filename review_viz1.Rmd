@@ -170,8 +170,28 @@ weather_df |>
 
 vs the regular geom_density.
 
+# save and embed
 
 
+Let's save a scaterplot
+
+```{r}
+weather_plot2 = 
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5)
+
+ggsave("review_all_files/weather_plot2.pdf", weather_plot2, width = 8, height = 5)
+```
+ how to saveee thinfs.
+ 
+ u can also just do `ggsave("weather_plot2.pdf", weather_plot2)
+
+embed at different sze
+
+```{r, fig.width=12, fig.height=6}
+weather_plot2
+```
 
 
 
