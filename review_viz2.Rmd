@@ -105,8 +105,46 @@ weather_df |>
   )
 ```
 
+## Themes
 
+shift the legend
 
+```{r}
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = 0.5) +
+  labs(
+    title = " Temperature plot",
+    x = "minimum daily temperature (C)",
+    y = "maximum daily temperature (C)",
+    caption = "Data from rnoaa package; temperatures in 2017"
+  ) +
+  viridis::scale_color_viridis(
+    name = "location",
+    discrete = TRUE) +
+  theme(legend.position = "bottom")
+```
+
+change the overall features
+
+```{r}
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = 0.5) +
+  labs(
+    title = " Temperature plot",
+    x = "minimum daily temperature (C)",
+    y = "maximum daily temperature (C)",
+    caption = "Data from rnoaa package; temperatures in 2017"
+  ) +
+  viridis::scale_color_viridis(
+    name = "location",
+    discrete = TRUE) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+must put theme_minimal FIRST 
 
 
 
