@@ -294,3 +294,41 @@ tmax_date_p =
     ## (`geom_point()`).
 
 ![](review_viz2_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+## Data manipulation
+
+control your factors
+
+``` r
+weather_df |> 
+  mutate(
+    name = factor(name),
+    name = forcats::fct_relevel(name, c("Molokai_HI"))
+  ) |> 
+  ggplot(aes(x = name, y = tmax, fill = name)) +
+  geom_violin(alpha = .5)
+```
+
+    ## Warning: Removed 17 rows containing non-finite outside the scale range
+    ## (`stat_ydensity()`).
+
+![](review_viz2_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+
+what if i wanted densities for tmin and tmax simultaneously?
+
+``` r
+weather_df |> 
+  pivot_longer(
+    tmax:tmin,
+    names_to = "observation",
+    values_to = "temperatures"
+  ) |> 
+  ggplot(aes(x = temperatures, fill = observation)) +
+  geom_density(alpha = .5) +
+  facet_grid(. ~ name)
+```
+
+    ## Warning: Removed 34 rows containing non-finite outside the scale range
+    ## (`stat_density()`).
+
+![](review_viz2_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
