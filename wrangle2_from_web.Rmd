@@ -1,0 +1,69 @@
+---
+title: "wrangle2_from_web"
+output: github_document
+---
+
+```{r}
+library(tidyverse)
+
+library(rvest)
+
+library(httr)
+```
+
+##Scrape a table!
+
+I want the first table from [this page] (http://samhda.s3-us-gov-west-1.amazonaws.com/s3fs-public/field-uploads/2k15StateFiles/NSDUHsaeShortTermCHG2015.htm)
+
+
+read in the html
+```{r}
+url = "http://samhda.s3-us-gov-west-1.amazonaws.com/s3fs-public/field-uploads/2k15StateFiles/NSDUHsaeShortTermCHG2015.htm"
+
+drug_use_html = read_html(url)
+```
+
+extract the table(s); focus on the first one
+
+this first is all 5 tables
+```{r}
+drug_use_html |> 
+  html_table()
+```
+
+now this is 1 table.
+```{r}
+table_marj = 
+  drug_use_html |> 
+  html_table() |> 
+  first() 
+```
+
+remove the "words"not" first row that is useless for us
+```{r}
+table_marj = 
+  drug_use_html |> 
+  html_table() |> 
+  first() |>
+  slice(-1) 
+
+table_marj
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
