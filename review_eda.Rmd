@@ -4,8 +4,12 @@ subtitle: "Exploratory Analysis"
 output: github_document
 ---
 
+```{r}
+library(tidyverse)
+```
 
-```{r eval = false}
+
+```{r}
 library(tidyverse)
 
 knitr::opts_chunk$set(
@@ -34,9 +38,8 @@ data("weather_df")
 
 weather_df = 
   weather_df |> 
-  mutate(
-    month = lubridate::floor_date(date, unit = "month")
-  )
+  mutate(month = lubridate::floor_date(date, unit = "month"))
+
 ```
 
 
@@ -50,7 +53,7 @@ weather_df |>
 ```
 
 
-
+## counting
 
 
 
