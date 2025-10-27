@@ -468,3 +468,63 @@ brfss_2010 =
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+## Some data aren’t so nice
+
+Let look at pokemon
+
+``` r
+poke =
+  GET("http://pokeapi.co/api/v2/pokemon/1") |> 
+  content()
+
+poke[["name"]]
+```
+
+    ## [1] "bulbasaur"
+
+``` r
+poke[["height"]]
+```
+
+    ## [1] 7
+
+``` r
+poke[["abilities"]]
+```
+
+    ## [[1]]
+    ## [[1]]$ability
+    ## [[1]]$ability$name
+    ## [1] "overgrow"
+    ## 
+    ## [[1]]$ability$url
+    ## [1] "https://pokeapi.co/api/v2/ability/65/"
+    ## 
+    ## 
+    ## [[1]]$is_hidden
+    ## [1] FALSE
+    ## 
+    ## [[1]]$slot
+    ## [1] 1
+    ## 
+    ## 
+    ## [[2]]
+    ## [[2]]$ability
+    ## [[2]]$ability$name
+    ## [1] "chlorophyll"
+    ## 
+    ## [[2]]$ability$url
+    ## [1] "https://pokeapi.co/api/v2/ability/34/"
+    ## 
+    ## 
+    ## [[2]]$is_hidden
+    ## [1] TRUE
+    ## 
+    ## [[2]]$slot
+    ## [1] 3
+
+## Closing thoughts
+
+Be reasonable… every time u access the file you download the file each
+time. thats alot…

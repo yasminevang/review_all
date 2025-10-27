@@ -118,7 +118,24 @@ brfss_2010 =
 ```
 
 
+## Some data aren't so nice
 
+Let look at pokemon
+
+```{r}
+poke =
+  GET("http://pokeapi.co/api/v2/pokemon/1") |> 
+  content()
+
+poke[["name"]]
+poke[["height"]]
+poke[["abilities"]]
+```
+
+## Closing thoughts
+
+Be reasonable... every time u access the file you download the file each time.
+thats alot...
 
 
 
