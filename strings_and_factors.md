@@ -29,6 +29,22 @@ library(rvest)
 
 ``` r
 library(p8105.datasets)
+
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_color_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
 ```
 
 ## Strings and regex
@@ -212,3 +228,27 @@ data_marj =
 ```
 
 Let’s continue with the data set. we just tidyed the data!
+
+\##NSDUH – factors
+
+``` r
+data_marj |> 
+  filter(age == "12-17") |>
+  mutate(State = fct_relevel(State, "Texas", "Oklahoma")) |> 
+  ggplot(aes(x = State, y = percent, color = year)) +
+  geom_point() + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+<img src="strings_and_factors_files/figure-gfm/unnamed-chunk-12-1.png" width="90%" />
+
+``` r
+data_marj |> 
+  filter(age == "12-17") |>
+  mutate(State = fct_reorder(State, percent)) |> 
+  ggplot(aes(x = State, y = percent, color = year)) +
+  geom_point() + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+<img src="strings_and_factors_files/figure-gfm/unnamed-chunk-13-1.png" width="90%" />
