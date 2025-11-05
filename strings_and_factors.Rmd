@@ -194,12 +194,34 @@ data_marj |>
 ```
 
 
+## Weather data
+
+```{r}
+weather_df
+```
 
 
+```{r}
+weather_df |>
+    mutate(name = fct_relevel(name, "Molokai_HI")) |> 
+  ggplot(aes(x = name,y = tmax)) + 
+  geom_violin()
+```
 
 
+```{r}
+weather_df |>
+    mutate(name = fct_reorder(name, tmax)) |> 
+  ggplot(aes(x = name,y = tmax)) + 
+  geom_violin()
+```
 
 
+```{r}
+weather_df |> 
+  lm(tmax ~ name, data = .)
+```
+^ didnt work but keep in mind.
 
 
 
