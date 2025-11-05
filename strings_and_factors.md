@@ -252,3 +252,59 @@ data_marj |>
 ```
 
 <img src="strings_and_factors_files/figure-gfm/unnamed-chunk-13-1.png" width="90%" />
+
+## Weather data
+
+``` r
+weather_df
+```
+
+    ## # A tibble: 2,190 × 6
+    ##    name           id          date        prcp  tmax  tmin
+    ##    <chr>          <chr>       <date>     <dbl> <dbl> <dbl>
+    ##  1 CentralPark_NY USW00094728 2021-01-01   157   4.4   0.6
+    ##  2 CentralPark_NY USW00094728 2021-01-02    13  10.6   2.2
+    ##  3 CentralPark_NY USW00094728 2021-01-03    56   3.3   1.1
+    ##  4 CentralPark_NY USW00094728 2021-01-04     5   6.1   1.7
+    ##  5 CentralPark_NY USW00094728 2021-01-05     0   5.6   2.2
+    ##  6 CentralPark_NY USW00094728 2021-01-06     0   5     1.1
+    ##  7 CentralPark_NY USW00094728 2021-01-07     0   5    -1  
+    ##  8 CentralPark_NY USW00094728 2021-01-08     0   2.8  -2.7
+    ##  9 CentralPark_NY USW00094728 2021-01-09     0   2.8  -4.3
+    ## 10 CentralPark_NY USW00094728 2021-01-10     0   5    -1.6
+    ## # ℹ 2,180 more rows
+
+``` r
+weather_df |>
+    mutate(name = fct_relevel(name, "Molokai_HI")) |> 
+  ggplot(aes(x = name,y = tmax)) + 
+  geom_violin()
+```
+
+    ## Warning: Removed 17 rows containing non-finite outside the scale range
+    ## (`stat_ydensity()`).
+
+<img src="strings_and_factors_files/figure-gfm/unnamed-chunk-15-1.png" width="90%" />
+
+``` r
+weather_df |>
+    mutate(name = fct_reorder(name, tmax)) |> 
+  ggplot(aes(x = name,y = tmax)) + 
+  geom_violin()
+```
+
+    ## Warning: There was 1 warning in `mutate()`.
+    ## ℹ In argument: `name = fct_reorder(name, tmax)`.
+    ## Caused by warning:
+    ## ! `fct_reorder()` removing 17 missing values.
+    ## ℹ Use `.na_rm = TRUE` to silence this message.
+    ## ℹ Use `.na_rm = FALSE` to preserve NAs.
+
+    ## Warning: Removed 17 rows containing non-finite outside the scale range
+    ## (`stat_ydensity()`).
+
+<img src="strings_and_factors_files/figure-gfm/unnamed-chunk-16-1.png" width="90%" />
+
+weather_df \|\> lm(tmax ~ name, data = .)
+
+^ didnt work but keep in mind.

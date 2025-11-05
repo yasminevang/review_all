@@ -217,10 +217,9 @@ weather_df |>
 ```
 
 
-```{r}
 weather_df |> 
   lm(tmax ~ name, data = .)
-```
+  
 ^ didnt work but keep in mind.
 
 
