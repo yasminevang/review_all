@@ -146,3 +146,69 @@ str_detect(string_vec, "\\[")
 this is to enforce what we just learned to find an actual open bracket
 
 ## Factors
+
+``` r
+factor_vec = factor(c("male", "male","female","female"))
+
+factor_vec
+```
+
+    ## [1] male   male   female female
+    ## Levels: female male
+
+``` r
+as.numeric(factor_vec)
+```
+
+    ## [1] 2 2 1 1
+
+what happens if i re level….
+
+``` r
+factor_vec = fct_relevel(factor_vec, "male")
+
+factor_vec
+```
+
+    ## [1] male   male   female female
+    ## Levels: male female
+
+``` r
+as.numeric(factor_vec)
+```
+
+    ## [1] 1 1 2 2
+
+\##NSDUH
+
+``` r
+nsduh_url = "http://samhda.s3-us-gov-west-1.amazonaws.com/s3fs-public/field-uploads/2k15StateFiles/NSDUHsaeShortTermCHG2015.htm"
+
+table_marj = 
+  read_html(nsduh_url) |> 
+  html_table() |> 
+  first() |>
+  slice(-1)
+```
+
+we are going to edit the data to make them clearer.
+
+``` r
+data_marj =
+  table_marj |> 
+  select(-contains("P Value")) |> 
+  pivot_longer(
+    -State,
+    names_to = "age_year",
+    values_to = "percent"
+  ) |> 
+  separate(age_year, into = c("age","year"), sep = "\\(") |> 
+  mutate(
+    year = str_replace(year, "\\)", ""),
+    percent = str_replace(percent, "[a-c]$", ""),
+    percent = as.numeric(percent)
+  ) |> 
+   filter(!(State %in% c("Total U.S.", "Northeast", "Midwest", "South", "West")))
+```
+
+Let’s continue with the data set. we just tidyed the data!
