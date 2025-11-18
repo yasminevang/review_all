@@ -182,11 +182,38 @@ listcol_df |>
 ```
 
 
+## Weather Data
+
+Operations on nested data: check it out on the p8105.com
 
 
+```{r}
+library(p8105.datasets)
+data("weather_df")
+```
 
 
+```{r}
+weather_nest = 
+  nest(weather_df, data = date:tmin)
 
+weather_nest
+```
+
+
+```{r}
+weather_nest |> pull(name)
+weather_nest |> pull(data)
+```
+
+
+SUppose I want to regress `tmax` on `tmin` for each station.
+
+```{r}
+weather_lm = function(df) {
+  lm(tmax ~ tmin, data = df)
+}
+```
 
 
 
