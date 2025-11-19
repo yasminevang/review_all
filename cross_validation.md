@@ -228,3 +228,102 @@ cv_df |>
 ```
 
 ![](cross_validation_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+
+## Try on a real dataset.
+
+Import my data
+
+``` r
+child_growth = read_csv("data/nepalese_children.csv")
+```
+
+    ## Rows: 2705 Columns: 5
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## dbl (5): age, sex, weight, height, armc
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+weight vs arm circumference
+
+``` r
+child_growth |> 
+  ggplot(aes(x = weight, y = armc)) + 
+  geom_point(alpha = .5)
+```
+
+![](cross_validation_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+
+``` r
+child_growth =
+  child_growth |> 
+  mutate(weight_cp7 = (weight > 7) * (weight - 7))
+```
+
+FIt the models I care about
+
+``` r
+linear_mod = lm(armc ~ weight, data = child_growth)
+smooth_mod = gam(armc ~ s(weight), data = child_growth)
+pwl_mod    = lm(armc ~ weight + weight_cp7, data = child_growth)
+```
+
+Lets get the data frame, gather predictions, etc
+
+``` r
+child_growth |> 
+  gather_predictions(linear_mod, pwl_mod, smooth_mod) |> 
+  mutate(model = fct_inorder(model)) |> 
+  ggplot(aes(x = weight, y = armc)) + 
+  geom_point(alpha = .5) +
+  geom_line(aes(y = pred), color = "red") + 
+  facet_grid(~model)
+```
+
+![](cross_validation_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
+
+piecewise and non linear models are pretty similar.
+
+try to understand model fit using CV.
+
+``` r
+cv_df =
+  crossv_mc(child_growth, 100) |> 
+  mutate(
+    train = map(train, as_tibble),
+    test = map(test, as_tibble))
+```
+
+fit models to the splits…
+
+``` r
+cv_df = 
+  cv_df |> 
+  mutate(
+    linear_mod  = map(train, \(df) lm(armc ~ weight, data = df)),
+    pwl_mod     = map(train, \(df) lm(armc ~ weight + weight_cp7, data = df)),
+    smooth_mod  = map(train, \(df) gam(armc ~ s(weight), data = as_tibble(df)))) |> 
+  mutate(
+    rmse_linear = map2_dbl(linear_mod, test, \(mod, df) rmse(model = mod, data = df)),
+    rmse_pwl    = map2_dbl(pwl_mod, test, \(mod, df) rmse(model = mod, data = df)),
+    rmse_smooth = map2_dbl(smooth_mod, test, \(mod, df) rmse(model = mod, data = df)))
+```
+
+now let’s graph it!
+
+Violin plot of RMSEs
+
+``` r
+cv_df |> 
+  select(starts_with("rmse")) |> 
+  pivot_longer(
+    everything(),
+    names_to = "model", 
+    values_to = "rmse",
+    names_prefix = "rmse_") |> 
+  mutate(model = fct_inorder(model)) |> 
+  ggplot(aes(x = model, y = rmse))+ geom_violin()
+```
+
+![](cross_validation_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
