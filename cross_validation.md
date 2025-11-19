@@ -142,3 +142,89 @@ rmse(wiggly_mod, test_df)
     ## [1] 0.08848557
 
 the smooth is the best one!
+
+## Cross validation using `modelr`
+
+``` r
+cv_df = 
+  crossv_mc(lidar_df, 100) 
+```
+
+what is happening here…
+
+``` r
+cv_df |> pull(train) |> nth(1) |> as_tibble()
+```
+
+    ## # A tibble: 176 × 3
+    ##    range logratio    id
+    ##    <dbl>    <dbl> <int>
+    ##  1   390  -0.0504     1
+    ##  2   394  -0.0510     4
+    ##  3   396  -0.0599     5
+    ##  4   399  -0.0596     7
+    ##  5   400  -0.0399     8
+    ##  6   402  -0.0294     9
+    ##  7   403  -0.0395    10
+    ##  8   405  -0.0476    11
+    ##  9   406  -0.0604    12
+    ## 10   408  -0.0312    13
+    ## # ℹ 166 more rows
+
+``` r
+cv_df |> pull(test) |> nth(1) |> as_tibble()
+```
+
+    ## # A tibble: 45 × 3
+    ##    range logratio    id
+    ##    <dbl>    <dbl> <int>
+    ##  1   391  -0.0601     2
+    ##  2   393  -0.0419     3
+    ##  3   397  -0.0284     6
+    ##  4   412  -0.0500    16
+    ##  5   421  -0.0316    22
+    ##  6   424  -0.0884    24
+    ##  7   426  -0.0702    25
+    ##  8   427  -0.0288    26
+    ##  9   436  -0.0573    32
+    ## 10   445  -0.0647    38
+    ## # ℹ 35 more rows
+
+``` r
+cv_df =
+  cv_df |> 
+  mutate(
+    train = map(train, as_tibble),
+    test = map(test, as_tibble))
+```
+
+Let’s try to fit models and get RMSEs for them.
+
+``` r
+cv_df = 
+  cv_df |> 
+  mutate(
+    linear_mod  = map(train, \(df) lm(logratio ~ range, data = df)),
+    smooth_mod  = map(train, \(df) gam(logratio ~ s(range), data = df)),
+    wiggly_mod  = map(train, \(df) gam(logratio ~ s(range, k = 30), sp = 10e-6, data = df))) |> 
+  mutate(
+    rmse_linear = map2_dbl(linear_mod, test, \(mod, df) rmse(model = mod, data = df)),
+    rmse_smooth = map2_dbl(smooth_mod, test, \(mod, df) rmse(model = mod, data = df)),
+    rmse_wiggly = map2_dbl(wiggly_mod, test, \(mod, df) rmse(model = mod, data = df)))
+```
+
+Plot this into a graph:
+
+``` r
+cv_df |> 
+  select(starts_with("rmse")) |> 
+  pivot_longer(
+    everything(),
+    names_to = "model", 
+    values_to = "rmse",
+    names_prefix = "rmse_") |> 
+  mutate(model = fct_inorder(model)) |> 
+  ggplot(aes(x = model, y = rmse)) + geom_violin()
+```
+
+![](cross_validation_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
