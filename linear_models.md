@@ -241,3 +241,90 @@ anova(fit_null, fit_alt) |>
     ##   <chr>                             <dbl>  <dbl> <dbl>   <dbl>     <dbl>   <dbl>
     ## 1 price ~ stars                     30528 1.03e9    NA NA            NA       NA
     ## 2 price ~ stars + borough + …       30523 9.21e8     5  1.09e8      725.       0
+
+## Nest data, fit models
+
+``` r
+nyc_airbnb |> 
+  lm(price ~ stars * borough + room_type * borough, data = _) |> 
+  broom::tidy() |> 
+  knitr::kable(digits = 3)
+```
+
+| term                                   | estimate | std.error | statistic | p.value |
+|:---------------------------------------|---------:|----------:|----------:|--------:|
+| (Intercept)                            |   90.067 |    75.406 |     1.194 |   0.232 |
+| stars                                  |    4.446 |    16.633 |     0.267 |   0.789 |
+| boroughBrooklyn                        |  -20.439 |    77.117 |    -0.265 |   0.791 |
+| boroughManhattan                       |    5.627 |    77.808 |     0.072 |   0.942 |
+| boroughQueens                          |    1.509 |    83.501 |     0.018 |   0.986 |
+| room_typePrivate room                  |  -52.915 |    17.751 |    -2.981 |   0.003 |
+| room_typeShared room                   |  -70.547 |    41.551 |    -1.698 |   0.090 |
+| stars:boroughBrooklyn                  |   16.525 |    16.982 |     0.973 |   0.331 |
+| stars:boroughManhattan                 |   22.664 |    17.099 |     1.325 |   0.185 |
+| stars:boroughQueens                    |    5.208 |    18.272 |     0.285 |   0.776 |
+| boroughBrooklyn:room_typePrivate room  |  -39.308 |    18.024 |    -2.181 |   0.029 |
+| boroughManhattan:room_typePrivate room |  -71.273 |    18.002 |    -3.959 |   0.000 |
+| boroughQueens:room_typePrivate room    |  -16.341 |    19.020 |    -0.859 |   0.390 |
+| boroughBrooklyn:room_typeShared room   |  -35.292 |    42.942 |    -0.822 |   0.411 |
+| boroughManhattan:room_typeShared room  |  -83.089 |    42.451 |    -1.957 |   0.050 |
+| boroughQueens:room_typeShared room     |  -24.427 |    44.399 |    -0.550 |   0.582 |
+
+this is more exploartory byt maybe easier to understand
+
+``` r
+nest_lm_res =
+  nyc_airbnb |> 
+  nest(data = -borough) |> 
+  mutate(
+    models = map(data, \(df) lm(price ~ stars + room_type, data = df)),
+    results = map(models, broom::tidy)) |> 
+  select(-data, -models) |> 
+  unnest(results)
+```
+
+results lets see it
+
+``` r
+nest_lm_res |> 
+  select(borough, term, estimate) |> 
+  mutate(term = fct_inorder(term)) |> 
+  pivot_wider(
+    names_from = term, values_from = estimate) |> 
+  knitr::kable(digits = 3)
+```
+
+| borough   | (Intercept) |  stars | room_typePrivate room | room_typeShared room |
+|:----------|------------:|-------:|----------------------:|---------------------:|
+| Bronx     |      90.067 |  4.446 |               -52.915 |              -70.547 |
+| Queens    |      91.575 |  9.654 |               -69.255 |              -94.973 |
+| Brooklyn  |      69.627 | 20.971 |               -92.223 |             -105.839 |
+| Manhattan |      95.694 | 27.110 |              -124.188 |             -153.635 |
+
+Let’s nest even more:
+
+``` r
+manhattan_airbnb =
+  nyc_airbnb |> 
+  filter(borough == "Manhattan")
+
+manhattan_nest_lm_res =
+  manhattan_airbnb |> 
+  nest(data = -neighborhood) |> 
+  mutate(
+    models = map(data, \(df) lm(price ~ stars + room_type, data = df)),
+    results = map(models, broom::tidy)) |> 
+  select(-data, -models) |> 
+  unnest(results)
+```
+
+``` r
+manhattan_nest_lm_res |> 
+  filter(str_detect(term, "room_type")) |> 
+  ggplot(aes(x = neighborhood, y = estimate)) + 
+  geom_point() + 
+  facet_wrap(~term) + 
+  theme(axis.text.x = element_text(angle = 80, hjust = 1))
+```
+
+<img src="linear_models_files/figure-gfm/unnamed-chunk-17-1.png" width="90%" />
